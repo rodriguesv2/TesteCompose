@@ -2,7 +2,6 @@ package br.com.rubensrodrigues.testecompose
 
 import android.os.Bundle
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -42,24 +41,44 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun NamesList(
-    names: List<String> = List(1000) { i -> "Beltrano $i" }
+    names: List<Name> = List(200) { i ->
+        Name(
+            name = "Beltrano $i",
+            isSelected = false
+        )
+    }
 ) {
     Box(
         Modifier.background(Color.Yellow)
     ) {
         LazyColumn {
             items(items = names) { name ->
-                NameItem(name = name)
+                NameItem(
+                    name = name.name,
+                    isSelected = name.isSelected,
+                    onClick = { isSelected ->
+                        name.isSelected = isSelected
+                    }
+                )
             }
         }
     }
 }
 
+data class Name(
+    val name: String,
+    var isSelected: Boolean
+)
+
 @Composable
-fun NameItem(name: String) {
-    val isSelected = remember { mutableStateOf(false) }
-    val backgroundColor by animateColorAsState(targetValue =
-        if (isSelected.value) Color.Red
+fun NameItem(
+    name: String,
+    isSelected: Boolean,
+    onClick: (Boolean) -> Unit
+) {
+    val isSelectedState = remember { mutableStateOf(isSelected) }
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelectedState.value) Color.Red
         else Color.Transparent
     )
 
@@ -73,7 +92,8 @@ fun NameItem(name: String) {
                 )
                 .background(color = backgroundColor)
                 .clickable {
-                    isSelected.value = !isSelected.value
+                    isSelectedState.value = !isSelectedState.value
+                    onClick(isSelectedState.value)
                 }
         )
         Divider()
