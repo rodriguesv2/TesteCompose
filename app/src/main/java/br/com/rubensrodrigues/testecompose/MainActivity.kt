@@ -1,10 +1,14 @@
 package br.com.rubensrodrigues.testecompose
 
 import android.os.Bundle
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -53,13 +57,24 @@ fun NamesList(
 
 @Composable
 fun NameItem(name: String) {
+    val isSelected = remember { mutableStateOf(false) }
+    val backgroundColor by animateColorAsState(targetValue =
+        if (isSelected.value) Color.Red
+        else Color.Transparent
+    )
+
     Column {
         Text(
             text = name,
-            modifier = Modifier.padding(
-                horizontal = 12.dp,
-                vertical = 30.dp
-            )
+            modifier = Modifier
+                .padding(
+                    horizontal = 12.dp,
+                    vertical = 30.dp
+                )
+                .background(color = backgroundColor)
+                .clickable {
+                    isSelected.value = !isSelected.value
+                }
         )
         Divider()
     }
@@ -114,7 +129,7 @@ fun DefaultPreview() {
 fun Counter() {
     val count = remember { mutableStateOf(0) }
 
-     Box {
+    Box {
         Button(
             onClick = { count.value++ },
             modifier = Modifier
