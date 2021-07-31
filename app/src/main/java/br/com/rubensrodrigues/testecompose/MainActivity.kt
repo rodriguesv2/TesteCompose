@@ -1,11 +1,13 @@
 package br.com.rubensrodrigues.testecompose
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -20,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.rubensrodrigues.testecompose.ui.theme.TesteComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,16 +29,45 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TesteComposeTheme {
-                Counter()
+                NamesList()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun NamesList(
+    names: List<String> = List(1000) { i -> "Beltrano $i" }
+) {
+    Box(
+        Modifier.background(Color.Yellow)
+    ) {
+        LazyColumn {
+            items(items = names) { name ->
+                NameItem(name = name)
             }
         }
     }
 }
 
 @Composable
+fun NameItem(name: String) {
+    Column {
+        Text(
+            text = name,
+            modifier = Modifier.padding(
+                horizontal = 12.dp,
+                vertical = 30.dp
+            )
+        )
+        Divider()
+    }
+}
+
+@Composable
 fun NewsStory() {
     MaterialTheme {
-//        Scaffold {
         val typography = MaterialTheme.typography
         Column(
             modifier = Modifier.padding(16.dp)
@@ -70,17 +100,16 @@ fun NewsStory() {
                 style = typography.body2
             )
         }
-//        }
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     NewsStory()
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun Counter() {
     val count = remember { mutableStateOf(0) }
