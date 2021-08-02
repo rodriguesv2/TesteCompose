@@ -33,7 +33,7 @@ class ListActivity : AppCompatActivity() {
 }
 
 @Composable
-@Preview
+@Preview(showSystemUi = true)
 fun SimpleList() {
     val listSize = 100
 
