@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidViewBinding
+import br.com.rubensrodrigues.testecompose.databinding.LayoutTestBinding
 
 @Composable
 fun Tela01(
@@ -34,7 +36,14 @@ fun Tela01(
 
 @Composable
 fun Tela02() {
-    Text(text = "Ess é a tela 02")
+    Text(text = "Essa é a tela 02")
+    Spacer(modifier = Modifier.padding(bottom = 16.dp))
+    AndroidViewBinding(
+        factory = LayoutTestBinding::inflate,
+        modifier = Modifier.padding(top = 28.dp)
+    ) {
+        testeEditText.setText("Bla bla bla")
+    }
 }
 
 @Preview(showSystemUi = true)
